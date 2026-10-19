@@ -32,14 +32,14 @@ Both tools compare **% used** with **% of the window that has passed**. If your 
 
 ### Install
 
-1. [Download the repo as a ZIP](https://github.com/Anandprasun/claude-usage-meter/archive/refs/heads/main.zip) and unzip it, or `git clone` it.
+1. Download `claude-usage-meter-extension-vX.Y.Z.zip` from the [latest release](https://github.com/Anandprasun/claude-usage-meter/releases/latest) and unzip it into a folder you'll keep (Chrome loads it from there, so don't delete it).
 2. Open `chrome://extensions` (or `edge://extensions`, `brave://extensions`).
 3. Turn on **Developer mode**.
-4. Click **Load unpacked** and select the `extension` folder.
+4. Click **Load unpacked** and select the unzipped folder. (If you cloned the repo instead, select its `extension` folder.)
 5. Pin **Claude Usage Meter** from the puzzle-piece menu so the badge stays visible.
 6. Open [claude.ai](https://claude.ai) while signed in. The badge fills in within a few seconds.
 
-To update later, pull or re-download, then click the reload icon on the extension's card in `chrome://extensions`.
+To update later, replace the folder's contents with the newer release (or `git pull`), then click the reload icon on the extension's card in `chrome://extensions`.
 
 ### What you get
 
@@ -63,6 +63,8 @@ git clone https://github.com/Anandprasun/claude-usage-meter.git
 cd claude-usage-meter
 python3 claude-code/install.py
 ```
+
+Or download `claude-usage-meter-statusline-vX.Y.Z.zip` from the [latest release](https://github.com/Anandprasun/claude-usage-meter/releases/latest), unzip it, and run `python3 install.py` inside it.
 
 The installer copies the script to `~/.claude/usage-statusline.py` (or `$CLAUDE_CONFIG_DIR`), sets `statusLine` in `settings.json`, and keeps your other settings. It backs up `settings.json` first and tells you if it's replacing an existing status line. Restart Claude Code to see it.
 
