@@ -24,7 +24,8 @@ spec.loader.exec_module(sl)
 def run(payload, **env):
     e = {**os.environ, "NO_COLOR": "1", **env}
     data = payload if isinstance(payload, str) else json.dumps(payload)
-    out = subprocess.run([sys.executable, str(SCRIPT)], input=data, capture_output=True, text=True, env=e, check=True)
+    out = subprocess.run([sys.executable, str(SCRIPT)], input=data, capture_output=True,
+                         encoding="utf-8", env=e, check=True)
     return out.stdout.strip()
 
 
@@ -105,7 +106,8 @@ class Installer(unittest.TestCase):
         self.dir.cleanup()
 
     def install(self, *args):
-        return subprocess.run([sys.executable, str(INSTALLER), *args], capture_output=True, text=True, env=self.env)
+        return subprocess.run([sys.executable, str(INSTALLER), *args], capture_output=True,
+                              encoding="utf-8", errors="replace", env=self.env)
 
     def settings(self):
         return json.loads((self.cfg / "settings.json").read_text())

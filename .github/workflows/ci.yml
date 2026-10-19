@@ -12,10 +12,10 @@ jobs:
   extension:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
       - name: Syntax check
         run: for f in extension/*.js; do node --check "$f"; done
       - name: Validate manifest
@@ -26,15 +26,16 @@ jobs:
   statusline:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python: ["3.9", "3.13"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
+      # No PYTHONIOENCODING override: the tests should pass with each
+      # platform's default encoding, as real users will have.
       - name: Unit tests
-        env:
-          PYTHONIOENCODING: utf-8
         run: python -m unittest discover -s tests -v

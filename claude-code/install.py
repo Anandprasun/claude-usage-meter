@@ -59,7 +59,7 @@ def main():
         print(f"Replacing your existing statusLine: {json.dumps(old)}")
     settings["statusLine"] = new
     save(settings)
-    print(f"Installed. Status line → {TARGET}")
+    print(f"Installed. Status line script: {TARGET}")
     print("Restart Claude Code (or start a new session) to see it.")
 
 

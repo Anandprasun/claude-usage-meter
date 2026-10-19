@@ -106,6 +106,13 @@ def pace(p, resets_at, window_s, now):
 
 
 def main():
+    # Claude Code speaks UTF-8; Windows Python defaults to a legacy code page,
+    # which can't encode the bar and warning characters.
+    for stream in (sys.stdin, sys.stdout):
+        try:
+            stream.reconfigure(encoding="utf-8")
+        except (AttributeError, ValueError):
+            pass
     try:
         data = json.loads(sys.stdin.read() or "{}")
     except json.JSONDecodeError:
