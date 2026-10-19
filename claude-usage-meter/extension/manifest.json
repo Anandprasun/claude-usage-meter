@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Claude Usage Meter",
+  "version": "1.0.0",
+  "description": "Shows your Claude session and weekly usage % as a toolbar badge, warns when you're burning faster than the limit allows.",
+  "permissions": ["storage", "alarms", "notifications"],
+  "host_permissions": ["https://claude.ai/*"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_popup": "popup.html", "default_title": "Claude usage" },
+  "icons": { "16": "icon16.png", "48": "icon48.png", "128": "icon128.png" },
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["shared.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

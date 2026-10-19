@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --bg:#fff; --fg:#1f1f1f; --muted:#6b6b6b; --line:#e6e6e6; --track:#ececec; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1f1f1f; --fg:#f1f1f1; --muted:#a0a0a0; --line:#333; --track:#3a3a3a; }
+  }
+  body { margin:0; width:300px; background:var(--bg); color:var(--fg);
+         font:13px/1.4 system-ui,-apple-system,Segoe UI,sans-serif; }
+  header { display:flex; justify-content:space-between; align-items:center; padding:12px 14px 6px; }
+  h1 { font-size:14px; margin:0; font-weight:600; }
+  button.link { background:none; border:0; color:#c96442; cursor:pointer; font:inherit; padding:0; }
+  .win { padding:8px 14px; }
+  .row { display:flex; justify-content:space-between; align-items:baseline; }
+  .pct { font-weight:600; font-variant-numeric:tabular-nums; }
+  .track { position:relative; height:8px; border-radius:4px; background:var(--track); margin:5px 0 4px; overflow:visible; }
+  .fill { height:100%; border-radius:4px; }
+  .green{background:#1e8e3e} .amber{background:#e8a200} .red{background:#d93025}
+  .tick { position:absolute; top:-3px; width:2px; height:14px; background:var(--fg); opacity:.55; border-radius:1px; }
+  .sub { color:var(--muted); font-size:12px; }
+  .warn { color:#b06d00; font-size:12px; margin-top:2px; }
+  @media (prefers-color-scheme: dark) { .warn { color:#f9ab00; } }
+  .empty { padding:14px; color:var(--muted); }
+  hr { border:0; border-top:1px solid var(--line); margin:8px 0 0; }
+  .settings { padding:8px 14px 12px; display:grid; gap:7px; }
+  .settings label { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  input[type=number] { width:52px; background:var(--bg); color:var(--fg); border:1px solid var(--line); border-radius:4px; padding:2px 4px; }
+  footer { padding:0 14px 12px; display:flex; justify-content:space-between; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Claude usage</h1>
+    <button class="link" id="refresh">Refresh</button>
+  </header>
+  <div id="windows"></div>
+  <hr>
+  <div class="settings">
+    <label>Warn at (%) <input type="number" id="warnAt" min="10" max="99"></label>
+    <label>Alert at (%) <input type="number" id="alertAt" min="10" max="100"></label>
+    <label>Desktop notifications <input type="checkbox" id="notify"></label>
+    <label>Show pill on claude.ai <input type="checkbox" id="showPill"></label>
+  </div>
+  <footer>
+    <span class="sub" id="updated"></span>
+    <button class="link" id="open">Usage page ↗</button>
+  </footer>
+  <script src="shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
