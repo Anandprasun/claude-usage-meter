@@ -26,3 +26,7 @@ Claude Usage Meter has no server, analytics, telemetry or third-party code.
 ## Claude Code status line
 
 Reads the JSON Claude Code passes on stdin and prints one line. It makes no network requests and writes no files. The installer only edits `~/.claude/settings.json` (after backing it up) and copies one script into `~/.claude/`.
+
+## Claude plugin
+
+Reads the usage figures Claude passes to plugins (each window's percentage and reset time). Keeps the latest figures, which alerts it has shown, and whether you hid the band, in the session's plugin state. Makes no network requests and reads no conversations or files.

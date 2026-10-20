@@ -103,5 +103,15 @@ extension/
 claude-code/
   usage-statusline.py   The status line command
   install.py            Installs/uninstalls into ~/.claude/settings.json
-tests/                  Unit tests for both
+claude-plugin/usage-meter/
+  .claude-plugin/plugin.json   Plugin manifest
+  hooks/register.tsx           The plugin: status entry, warning band, alerts, /usage-meter
+  types/index.d.ts             Its state contract
+  tests/                       Its tests (claude plugin test)
+.claude-plugin/marketplace.json  Lets `/plugin install` find the plugin in this repo
+tests/                  Unit tests for the extension and status line
 ```
+
+## Claude plugin
+
+The plugin uses Claude's plugin hooks. It listens for `session.measure`, which Claude raises after each reply and whenever a rate-limit window moves by a whole point, carrying the windows (`five_hour`, `seven_day`, each with `percentUsed` and `resetsAt`). It also reads `$.session.usage()` once at session start and on `/usage-meter`. The pace maths is the same as above. It keeps its figures and which alerts it has shown in the session's plugin state, so a reload doesn't repeat alerts.

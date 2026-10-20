@@ -7,3 +7,4 @@ __pycache__/
 node_modules/
 .vscode/
 .idea/
+.claude-plugin/types/

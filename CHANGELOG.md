@@ -2,6 +2,11 @@
 
 All notable changes are listed here. This project uses [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-10-20
+
+### Added
+- Claude plugin (`usage-meter`): live usage inside Claude Code sessions in the desktop app, terminal and VS Code. Status line entry, a warning band above the prompt, alerts at 75% and 90%, and `/usage-meter`. Installs with `/plugin install usage-meter --marketplace Anandprasun/claude-usage-meter`.
+
 ## [1.0.0] - 2026-10-19
 
 ### Added
@@ -12,4 +17,5 @@ All notable changes are listed here. This project uses [Semantic Versioning](htt
 - Unit tests and CI on Linux, macOS and Windows.
 - Release downloads: the extension and the status line as separate zips.
 
+[1.1.0]: https://github.com/Anandprasun/claude-usage-meter/releases/tag/v1.1.0
 [1.0.0]: https://github.com/Anandprasun/claude-usage-meter/releases/tag/v1.0.0

@@ -1,0 +1,14 @@
+{
+  "name": "claude-usage-meter",
+  "description": "Live Claude plan usage meters",
+  "owner": {
+    "name": "Prasun Anand"
+  },
+  "plugins": [
+    {
+      "name": "usage-meter",
+      "source": "./claude-plugin/usage-meter",
+      "description": "Live Claude plan usage (session and weekly %) with a pace warning, inside Claude"
+    }
+  ]
+}

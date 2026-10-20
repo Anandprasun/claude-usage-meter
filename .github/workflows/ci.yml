@@ -23,6 +23,22 @@ jobs:
       - name: Unit tests
         run: node --test tests/*.test.js
 
+  plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Validate marketplace and plugin
+        run: |
+          claude plugin validate .
+          claude plugin validate claude-plugin/usage-meter
+      - name: Plugin tests
+        run: claude plugin test claude-plugin/usage-meter
+
   statusline:
     runs-on: ${{ matrix.os }}
     strategy:

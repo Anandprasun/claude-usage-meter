@@ -1,0 +1,11 @@
+{
+  "name": "usage-meter",
+  "version": "1.0.0",
+  "description": "Live Claude plan usage (session and weekly %) with a pace warning, inside Claude",
+  "types": "./types/index.d.ts",
+  "author": {
+    "name": "Prasun Anand"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/Anandprasun/claude-usage-meter"
+}

@@ -5,14 +5,15 @@
 
 See how much of your Claude plan you've used, and get warned **before** you hit the limit, not after.
 
-Two small, dependency-free tools:
+Three small, dependency-free tools. Pick the one(s) for where you use Claude:
 
 | | Where it runs | What it shows |
 |---|---|---|
 | [**Chrome extension**](#chrome-extension) | claude.ai in Chrome, Edge, Brave, Arc | Toolbar badge, popup with every limit, on-page pill, desktop alerts |
+| [**Claude plugin**](#claude-plugin-live-meter-inside-claude) | Inside Claude: Claude Code sessions in the desktop app, terminal or VS Code | Live usage under the prompt, a warning band, alerts, `/usage-meter` |
 | [**Status line**](#claude-code-status-line) | Claude Code in your terminal | Model · context % · 5-hour bar · weekly % |
 
-Both track the same limits as claude.ai → **Settings → Usage**: the **session** window (resets every 5 hours), the **weekly** window, and per-model weekly limits where your plan has them. Usage is shared across claude.ai and Claude Code, so either tool reflects both.
+All three track the same limits as claude.ai → **Settings → Usage**: the **session** window (resets every 5 hours), the **weekly** window, and per-model weekly limits where your plan has them. Usage is shared across claude.ai and Claude Code, so either tool reflects both.
 
 <p align="center">
   <img src="docs/images/popup-light.png" width="260" alt="Extension popup in light mode">
@@ -49,6 +50,43 @@ To update later, replace the folder's contents with the newer release (or `git p
 - **Desktop notifications** at your warn level (default 75%) and alert level (default 90%), once per window, plus a one-time "burning fast" heads-up.
 
 <p align="center"><img src="docs/images/pill.png" width="420" alt="Usage pill on claude.ai"></p>
+
+---
+
+## Claude plugin: live meter inside Claude
+
+A plugin that shows your usage inside Claude itself, live, with no unofficial endpoint involved. Claude sends it the same usage figures it uses for its own limit warnings, after each reply.
+
+### Install
+
+At the prompt of a Claude Code session:
+
+```
+/plugin install usage-meter --marketplace Anandprasun/claude-usage-meter
+```
+
+Answer `y` to add the marketplace, then choose where to install it (for yourself, or for one project).
+
+From a shell:
+
+```bash
+claude plugin install usage-meter --marketplace Anandprasun/claude-usage-meter
+```
+
+In the desktop app, where `/plugin` doesn't run: click **+** next to the prompt box, then **Plugins**, **Add marketplace** with `Anandprasun/claude-usage-meter`, then **Add plugin**.
+
+### What you get
+
+- **Under the prompt**, always: `Session 61% ⚠ (resets 3h 00m) · Week 18%`. The ⚠ means you're on pace to hit the limit before it resets.
+- **Above the prompt**, only when it matters (past 75%, or ahead of pace): a coloured bar for each limit with time to the limit and to the reset. **Hide** puts it away until things get worse.
+- **Alerts** at 75% and 90% of each window, once per window, plus a desktop notification at 90%.
+- **`/usage-meter`** prints the full breakdown.
+
+Figures appear after the first reply in a session, and only on subscription plans (Pro, Max, Team, Enterprise); API-key usage has no plan limits to show.
+
+### Where it doesn't work
+
+Plugins run in Claude Code sessions, not in regular chats in the Claude app or on claude.ai. For those, use the [Chrome extension](#chrome-extension), or check **Settings → Usage**.
 
 ---
 
@@ -94,12 +132,12 @@ python3 claude-code/install.py --uninstall
 
 ## Privacy
 
-Nothing leaves your machine. The extension reads usage from claude.ai using your existing browser session, stores only the latest numbers and your settings in Chrome's extension storage, and sends no data anywhere else. The status line reads only what Claude Code passes to it. See [PRIVACY.md](PRIVACY.md).
+Nothing leaves your machine. The extension reads usage from claude.ai using your existing browser session, stores only the latest numbers and your settings in Chrome's extension storage, and sends no data anywhere else. The status line and the Claude plugin read only the figures Claude passes to them, and make no network requests. See [PRIVACY.md](PRIVACY.md).
 
 ## Caveats
 
 - **The extension relies on an undocumented claude.ai endpoint** (the one the Settings → Usage page uses). Anthropic can change it at any time. The parser handles both response formats seen so far, but if the badge stops updating, that's the most likely cause. The Usage page in Settings is always the source of truth. See [docs/troubleshooting.md](docs/troubleshooting.md).
-- The status line uses data Claude Code supplies to status line commands, which is the supported route.
+- The status line and the Claude plugin use figures Claude itself supplies, which is the supported route. The plugin API is marked early access, so a future Claude update may need a plugin update.
 - The pace projection assumes you continue at your average rate since the window opened. A burst of heavy work early in a window will look alarming until you slow down. That's intended.
 - Team and Enterprise plans with different limit structures may show fewer windows.
 
