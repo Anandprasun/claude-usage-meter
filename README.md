@@ -14,7 +14,9 @@ Four small, dependency-free tools. Pick the one(s) for where you use Claude:
 | [**Claude plugin**](#claude-plugin-live-meter-inside-claude) | Inside Claude: Claude Code sessions in the desktop app, terminal or VS Code | Live usage under the prompt, a warning band, alerts, `/usage-meter` |
 | [**Status line**](#claude-code-status-line) | Claude Code in your terminal | Model · context % · 5-hour bar · weekly % |
 
-All three track the same limits as claude.ai → **Settings → Usage**: the **session** window (resets every 5 hours), the **weekly** window, and per-model weekly limits where your plan has them. Usage is shared across claude.ai and Claude Code, so either tool reflects both.
+All four track the same limits as claude.ai → **Settings → Usage**: the **session** window (resets every 5 hours), the **weekly** window, and per-model weekly limits where your plan has them. Usage is shared across the Claude app, claude.ai and Claude Code, so each tool shows your total, wherever you used Claude.
+
+**Getting the files**: every install below starts from a copy of this repository. Either clone it (`git clone https://github.com/Anandprasun/claude-usage-meter.git`) or click **Code → Download ZIP** on GitHub and unzip it somewhere you'll keep. The Claude plugin is the exception: it installs straight from GitHub with one command.
 
 <p align="center">
   <img src="docs/images/popup-light.png" width="260" alt="Extension popup in light mode">
@@ -69,14 +71,16 @@ If the menu bar shows **–**, click it: it says what's wrong (usually "Claude l
 
 ### Install
 
-1. Download `claude-usage-meter-extension-vX.Y.Z.zip` from the [latest release](https://github.com/Anandprasun/claude-usage-meter/releases/latest) and unzip it into a folder you'll keep (Chrome loads it from there, so don't delete it).
+1. [Get the files](#claude-usage-meter) and keep the folder: Chrome loads the extension from it, so don't delete it.
 2. Open `chrome://extensions` (or `edge://extensions`, `brave://extensions`).
 3. Turn on **Developer mode**.
-4. Click **Load unpacked** and select the unzipped folder. (If you cloned the repo instead, select its `extension` folder.)
+4. Click **Load unpacked** and select the `extension` folder inside the repository.
 5. Pin **Claude Usage Meter** from the puzzle-piece menu so the badge stays visible.
 6. Open [claude.ai](https://claude.ai) while signed in. The badge fills in within a few seconds.
 
-To update later, replace the folder's contents with the newer release (or `git pull`), then click the reload icon on the extension's card in `chrome://extensions`.
+To update later, `git pull` (or download the ZIP again over the same folder), then click the reload icon on the extension's card in `chrome://extensions`.
+
+**Safari**: Safari can load it for testing (Settings → Advanced → *Show features for web developers*, then Developer → **Add Temporary Extension…** and pick the `extension` folder), but Safari removes it when you quit, and desktop alerts don't work there. On a Mac, the [menu-bar meter](#mac-menu-bar) is the better choice.
 
 ### What you get
 
@@ -138,7 +142,7 @@ cd claude-usage-meter
 python3 claude-code/install.py
 ```
 
-Or download `claude-usage-meter-statusline-vX.Y.Z.zip` from the [latest release](https://github.com/Anandprasun/claude-usage-meter/releases/latest), unzip it, and run `python3 install.py` inside it.
+On Windows, use `python` instead of `python3`.
 
 The installer copies the script to `~/.claude/usage-statusline.py` (or `$CLAUDE_CONFIG_DIR`), sets `statusLine` in `settings.json`, and keeps your other settings. It backs up `settings.json` first and tells you if it's replacing an existing status line. Restart Claude Code to see it.
 
