@@ -39,6 +39,22 @@ jobs:
       - name: Plugin tests
         run: claude plugin test claude-plugin/usage-meter
 
+  menubar:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Compile as JXA
+        run: osacompile -l JavaScript -o "$RUNNER_TEMP/check.scpt" macos-menubar/claude-usage.2m.js
+      - name: Run it for real (no Claude login on CI, so expect the sign-in message)
+        run: |
+          out=$(./macos-menubar/claude-usage.2m.js)
+          printf '%s\n' "$out"
+          printf '%s\n' "$out" | head -1 | grep -q '^– | sfimage=gauge.with.needle$'
+          printf '%s\n' "$out" | grep -q 'signed in'
+          printf '%s\n' "$out" | grep -q 'Refresh | refresh=true'
+      - name: Installer syntax
+        run: sh -n macos-menubar/install.sh
+
   statusline:
     runs-on: ${{ matrix.os }}
     strategy:

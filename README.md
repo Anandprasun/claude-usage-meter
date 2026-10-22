@@ -5,10 +5,11 @@
 
 See how much of your Claude plan you've used, and get warned **before** you hit the limit, not after.
 
-Three small, dependency-free tools. Pick the one(s) for where you use Claude:
+Four small, dependency-free tools. Pick the one(s) for where you use Claude:
 
 | | Where it runs | What it shows |
 |---|---|---|
+| [**Mac menu bar**](#mac-menu-bar) | Your Mac's menu bar, whatever app you're in: Claude chat, Cowork, Code, a browser | Session and weekly % at a glance, dropdown with every limit, alerts |
 | [**Chrome extension**](#chrome-extension) | claude.ai in Chrome, Edge, Brave, Arc | Toolbar badge, popup with every limit, on-page pill, desktop alerts |
 | [**Claude plugin**](#claude-plugin-live-meter-inside-claude) | Inside Claude: Claude Code sessions in the desktop app, terminal or VS Code | Live usage under the prompt, a warning band, alerts, `/usage-meter` |
 | [**Status line**](#claude-code-status-line) | Claude Code in your terminal | Model · context % · 5-hour bar · weekly % |
@@ -26,6 +27,41 @@ All three track the same limits as claude.ai → **Settings → Usage**: the **s
 A percentage alone is misleading. 60% used with 20 minutes left until reset is fine; 60% used with 4 hours left means you'll run out halfway through the afternoon.
 
 Both tools compare **% used** with **% of the window that has passed**. If your average rate so far would reach 100% before the reset, you get a ⚠ and an estimate of when. In the popup, the tick mark on each bar is the "even pace" point. If the fill is past the tick, you're ahead of a sustainable rate. More detail in [docs/how-it-works.md](docs/how-it-works.md).
+
+---
+
+## Mac menu bar
+
+The one to use if you work in the Claude app: it sits in the menu bar at the top of the screen and is visible whatever you're doing.
+
+```
+◔ 42% · 18%          ← session · week; turns amber/red and gets a ⚠ when it matters
+```
+
+Click it for every limit with a bar, reset countdowns, and the pace warning. It refreshes every 2 minutes and notifies you at 75% and 90%, plus once if you're burning through a window too fast.
+
+### Requirements
+
+- macOS, with **Claude Code installed and signed in** with your Claude subscription. The meter reads your usage with that existing login, so there's nothing to configure. (Run `claude` in Terminal once if you've never signed in.)
+- [SwiftBar](https://swiftbar.app), a free, open-source menu-bar app. The installer can add it for you via Homebrew.
+
+### Install
+
+```bash
+git clone https://github.com/Anandprasun/claude-usage-meter.git
+cd claude-usage-meter
+sh macos-menubar/install.sh
+```
+
+The first time it runs, macOS asks whether SwiftBar may use **"Claude Code-credentials"** from your Keychain. Choose **Always Allow**. That's your existing Claude Code login; the meter only uses it to ask for your usage figures, and doesn't copy or store it.
+
+Without git: download the repo as a ZIP from GitHub, unzip it, and run `sh macos-menubar/install.sh` from that folder. Or install SwiftBar yourself and copy `macos-menubar/claude-usage.2m.js` into SwiftBar's plugin folder.
+
+**Update**: pull or re-download, and run the installer again. **Uninstall**: `sh macos-menubar/install.sh --uninstall`.
+
+**Refresh rate**: the `2m` in the file name means every 2 minutes. Rename it to `claude-usage.1m.js` (or `5m`) in the plugin folder to change it.
+
+If the menu bar shows **–**, click it: it says what's wrong (usually "Claude login expired", fixed by opening any Claude Code session, which renews the login). See [troubleshooting](docs/troubleshooting.md#mac-menu-bar).
 
 ---
 
@@ -86,7 +122,7 @@ Figures appear after the first reply in a session, and only on subscription plan
 
 ### Where it doesn't work
 
-Plugins run in Claude Code sessions, not in regular chats in the Claude app or on claude.ai. For those, use the [Chrome extension](#chrome-extension), or check **Settings → Usage**.
+Plugins like this run in Claude Code sessions (terminal, the desktop app's Code tab, VS Code). Chats and Cowork tasks in the Claude app don't load them, even when added there. For those, use the [Mac menu bar](#mac-menu-bar) meter.
 
 ---
 
@@ -132,11 +168,11 @@ python3 claude-code/install.py --uninstall
 
 ## Privacy
 
-Nothing leaves your machine. The extension reads usage from claude.ai using your existing browser session, stores only the latest numbers and your settings in Chrome's extension storage, and sends no data anywhere else. The status line and the Claude plugin read only the figures Claude passes to them, and make no network requests. See [PRIVACY.md](PRIVACY.md).
+No data goes anywhere except Anthropic's own servers. The extension reads usage from claude.ai using your existing browser session and stores only the latest numbers and your settings. The menu-bar meter asks Anthropic's API for your usage with your existing Claude Code login, and stores only the latest numbers. The status line and the Claude plugin read only the figures Claude passes to them, and make no network requests. See [PRIVACY.md](PRIVACY.md).
 
 ## Caveats
 
-- **The extension relies on an undocumented claude.ai endpoint** (the one the Settings → Usage page uses). Anthropic can change it at any time. The parser handles both response formats seen so far, but if the badge stops updating, that's the most likely cause. The Usage page in Settings is always the source of truth. See [docs/troubleshooting.md](docs/troubleshooting.md).
+- **The extension and the menu-bar meter rely on undocumented usage endpoints** (the extension uses the one behind claude.ai's Settings → Usage page; the menu bar the one Claude Code's own usage tools use). Anthropic can change them at any time. The parser handles both response formats seen so far, but if the badge stops updating, that's the most likely cause. The Usage page in Settings is always the source of truth. See [docs/troubleshooting.md](docs/troubleshooting.md).
 - The status line and the Claude plugin use figures Claude itself supplies, which is the supported route. The plugin API is marked early access, so a future Claude update may need a plugin update.
 - The pace projection assumes you continue at your average rate since the window opened. A burst of heavy work early in a window will look alarming until you slow down. That's intended.
 - Team and Enterprise plans with different limit structures may show fewer windows.

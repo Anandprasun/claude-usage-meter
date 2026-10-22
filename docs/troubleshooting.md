@@ -44,3 +44,20 @@ Your `settings.json` has a syntax error (often a trailing comma). Fix it, then r
 
 **I had a custom status line before**
 The installer prints the old value before replacing it and saves a timestamped backup next to `settings.json` (`settings.json.bak-…`).
+
+## Mac menu bar
+
+**It shows – instead of a percentage**
+Click it; the menu says why.
+- *Claude Code isn't signed in on this Mac*: run `claude` in Terminal and sign in with your Claude account (not an API key), then click Refresh.
+- *Claude login expired*: Claude Code renews its login when it runs. Open any Claude Code session (terminal or the desktop app's Code tab), then click Refresh.
+- *Couldn't read usage*: a network problem, or the usage endpoint changed. If it persists while Settings → Usage on claude.ai works, please [open an issue](https://github.com/Anandprasun/claude-usage-meter/issues/new/choose).
+
+**macOS keeps asking for permission to use "Claude Code-credentials"**
+Choose **Always Allow** rather than Allow. If you clicked Deny, open **Keychain Access**, find "Claude Code-credentials", open it, and under **Access Control** add SwiftBar (and `osascript`), or simply delete those entries and choose Always Allow next time.
+
+**Nothing appears in the menu bar at all**
+Make sure SwiftBar is running (it shows its own icon) and that the plugin file is in SwiftBar's plugin folder and executable. Rerunning `sh macos-menubar/install.sh` fixes both. On a crowded menu bar, macOS hides items that don't fit; quit a few menu-bar apps or use a tool like Ice or Bartender.
+
+**Notifications don't appear**
+Allow notifications for **Script Editor** in System Settings → Notifications (macOS shows the meter's alerts under that name).

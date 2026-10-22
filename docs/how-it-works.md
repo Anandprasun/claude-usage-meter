@@ -103,6 +103,9 @@ extension/
 claude-code/
   usage-statusline.py   The status line command
   install.py            Installs/uninstalls into ~/.claude/settings.json
+macos-menubar/
+  claude-usage.2m.js   SwiftBar plugin (macOS JavaScript); refreshes every 2 minutes
+  install.sh           Installs SwiftBar if needed and the plugin into it
 claude-plugin/usage-meter/
   .claude-plugin/plugin.json   Plugin manifest
   hooks/register.tsx           The plugin: status entry, warning band, alerts, /usage-meter
@@ -115,3 +118,14 @@ tests/                  Unit tests for the extension and status line
 ## Claude plugin
 
 The plugin uses Claude's plugin hooks. It listens for `session.measure`, which Claude raises after each reply and whenever a rate-limit window moves by a whole point, carrying the windows (`five_hour`, `seven_day`, each with `percentUsed` and `resetsAt`). It also reads `$.session.usage()` once at session start and on `/usage-meter`. The pace maths is the same as above. It keeps its figures and which alerts it has shown in the session's plugin state, so a reload doesn't repeat alerts.
+
+## Mac menu bar
+
+Every refresh, one shell pipeline reads Claude Code's login (Keychain item `Claude Code-credentials`, else `~/.claude/.credentials.json`), extracts the access token with `plutil`, and calls
+
+```
+GET https://api.anthropic.com/api/oauth/usage
+anthropic-beta: oauth-2025-04-20
+```
+
+with the token sent to `curl` on standard input (`-H @-`), so it never becomes a command-line argument. The script itself only ever sees the response body and status code. The response uses the same flat or `limits`-array shapes as above and goes through the same parsing and pace maths. A 401/403 means the login has expired; Claude Code renews it the next time it runs, and the meter doesn't try to refresh it itself.
